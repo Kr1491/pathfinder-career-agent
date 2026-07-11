@@ -1,0 +1,15 @@
+## PathFinder Career Agent — Requirements
+
+# ─── Core web framework ───────────────────────────────────────────────────────
+Flask==3.0.3
+flask-cors==4.0.1
+python-dotenv==1.0.1
+gunicorn==22.0.0
+
+# ─── IBM Watsonx.ai SDK ───────────────────────────────────────────────────────
+# Install this separately if ibm-watsonx-ai conflicts with your Python version:
+#   pip install ibm-watsonx-ai
+ibm-watsonx-ai==1.1.7
+
+# ─── Utilities ────────────────────────────────────────────────────────────────
+requests==2.32.3

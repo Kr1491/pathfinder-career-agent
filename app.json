@@ -1,0 +1,44 @@
+{
+  "name": "PathFinder - Agentic Career Counseling Companion",
+  "description": "A conversational AI career counseling agent built with Flask and IBM watsonx.ai, using an IBM Granite model to help students assess their academic strengths, surface genuine interests, and generate a personalized, step-by-step career roadmap.",
+  "domain": "Education",
+  "problem_statement": "Agentic AI for Career Counseling Companion",
+  "author": {
+    "name": "Krishna Jha",
+    "email": "jhakrishna1491@gmail.com"
+  },
+  "repository": "https://github.com/Kr1491/pathfinder-career-agent",
+  "tech_stack": {
+    "backend": "Python (Flask)",
+    "ai_platform": "IBM watsonx.ai",
+    "model": "ibm/granite-3-3-8b-instruct",
+    "embedding_model": "ibm/slate-125m-english-rtrvr",
+    "orchestration": "LangFlow",
+    "frontend": "HTML, Bootstrap, JavaScript"
+  },
+  "features": [
+    "Conversational assessment of academic background, skills, and interests",
+    "Personalized, step-by-step career roadmap generation",
+    "Grounded recommendations using the Granite model's knowledge of industry trends",
+    "Dashboard view for skill-gap analysis and roadmap progress",
+    "Structured AGENT_INSTRUCTIONS for configurable counseling tone and safety rules"
+  ],
+  "environment_variables": {
+    "IBM_API_KEY": "IBM Cloud API key for watsonx.ai",
+    "IBM_PROJECT_ID": "watsonx.ai project ID",
+    "IBM_WATSONX_URL": "Regional watsonx.ai endpoint URL",
+    "GRANITE_CHAT_MODEL": "Granite chat model ID",
+    "GRANITE_EMBED_MODEL": "Granite embedding model ID"
+  },
+  "how_to_run": [
+    "Clone the repository",
+    "Copy .env.example to .env and fill in your IBM Cloud credentials",
+    "Install dependencies: pip install -r requirements.txt",
+    "Run the app: python run.py",
+    "Open http://127.0.0.1:5000 in your browser"
+  ],
+  "submission": {
+    "program": "IBM SkillsBuild AICTE 2026 University Engagement",
+    "challenge": "Exploring the Power of Agentic AI with IBM Granite and LangFlow"
+  }
+}

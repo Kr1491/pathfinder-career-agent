@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PathFinder — AI Career Counselling</title>
+  <meta name="description" content="AI-powered career counselling companion powered by IBM Watsonx.ai and Granite models.">
+
+  <!-- Bootstrap 5 dark -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    crossorigin="anonymous">
+
+  <!-- PathFinder custom styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════════════════════ -->
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🧭</div>
+      <span>PathFinder</span>
+    </div>
+
+    <div class="nav-section">Navigation</div>
+    <div class="nav-item active" data-view="chat">
+      <span class="icon"><i class="bi bi-chat-dots-fill"></i></span>
+      <span>Career Chat</span>
+    </div>
+    <div class="nav-item" data-view="dashboard">
+      <span class="icon"><i class="bi bi-bar-chart-fill"></i></span>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-item" data-view="roadmap">
+      <span class="icon"><i class="bi bi-map-fill"></i></span>
+      <span>Roadmap Planner</span>
+    </div>
+
+    <div class="nav-section" style="margin-top:8px;">Resources</div>
+    <div class="nav-item" onclick="switchView('dashboard')">
+      <span class="icon"><i class="bi bi-graph-up-arrow"></i></span>
+      <span>Trending Skills</span>
+    </div>
+    <div class="nav-item" onclick="switchView('dashboard')">
+      <span class="icon"><i class="bi bi-building"></i></span>
+      <span>Industry Outlook</span>
+    </div>
+
+    <div class="sidebar-footer">
+      <div style="margin-bottom:6px;">
+        <span class="demo-badge" style="display:none;">
+          <i class="bi bi-exclamation-circle"></i> Demo Mode
+        </span>
+      </div>
+      <div>Powered by</div>
+      <div style="font-weight:600;color:var(--pf-text);margin-top:2px;">IBM Watsonx.ai · Granite</div>
+      <div style="margin-top:4px;font-size:10px;">Labor Market Data 2025-Q1</div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ MAIN CONTENT ══════════════════════════════════ -->
+  <div id="main">
+
+    <!-- Top bar -->
+    <div id="topbar">
+      <button id="sidebar-toggle" class="btn-icon" title="Toggle sidebar">
+        <i class="bi bi-list"></i>
+      </button>
+      <h5 id="view-title">💬 Career Chat</h5>
+      <div class="topbar-right">
+        <span class="demo-badge" style="display:none;">
+          <i class="bi bi-cpu"></i> Demo
+        </span>
+        <button class="btn-icon" id="clear-chat-btn" title="Clear chat">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CHAT VIEW ═══════════════════════════════════════════ -->
+    <div class="view active" id="chat-view">
+
+      <!-- Profile bar -->
+      <div id="profile-bar">
+        <div class="profile-field">
+          <label>Your Name</label>
+          <input id="profile-name" type="text" placeholder="e.g. Alex">
+        </div>
+        <div class="profile-field">
+          <label>Education / Field</label>
+          <input id="profile-education" type="text" placeholder="e.g. Computer Science">
+        </div>
+        <div class="profile-field">
+          <label>Current Skills (comma-separated)</label>
+          <input id="profile-skills" type="text" placeholder="Python, SQL, Machine Learning">
+        </div>
+        <div class="profile-field">
+          <label>Interests</label>
+          <input id="profile-interests" type="text" placeholder="AI, healthcare, sustainability…">
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="chat-messages">
+        <!-- Welcome screen -->
+        <div id="welcome">
+          <div class="welcome-icon">🧭</div>
+          <div class="welcome-title">Welcome to PathFinder</div>
+          <div class="welcome-sub">
+            Your AI-powered career counselling companion. Tell me about your background
+            and I'll help you discover the perfect career path, grounded in real labor market data.
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px;">
+            <button class="quick-btn" onclick="document.getElementById('chat-input').value='What career paths suit a Computer Science graduate interested in AI?';document.getElementById('chat-input').dispatchEvent(new Event('input'));">
+              🎓 CS grad interested in AI
+            </button>
+            <button class="quick-btn" onclick="document.getElementById('chat-input').value='I know Python and SQL. What data roles should I target?';document.getElementById('chat-input').dispatchEvent(new Event('input'));">
+              📊 Python + SQL career paths
+            </button>
+            <button class="quick-btn" onclick="document.getElementById('chat-input').value='What are the highest paying tech skills in 2025?';document.getElementById('chat-input').dispatchEvent(new Event('input'));">
+              💰 Highest-paying skills 2025
+            </button>
+            <button class="quick-btn" onclick="document.getElementById('chat-input').value='How do I transition from Finance to Data Science?';document.getElementById('chat-input').dispatchEvent(new Event('input'));">
+              🔄 Finance → Data Science transition
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestion chips -->
+      <div id="suggestion-chips">
+        <span class="chip suggestion-chip" data-msg="What certifications should I get for cloud computing?">☁️ Cloud certs</span>
+        <span class="chip suggestion-chip" data-msg="What does a typical day look like as an AI engineer?">🤖 AI Engineer day</span>
+        <span class="chip suggestion-chip" data-msg="How do I build a data science portfolio with no experience?">📁 Portfolio tips</span>
+        <span class="chip suggestion-chip" data-msg="What soft skills do employers value most in 2025?">🤝 Soft skills</span>
+        <span class="chip suggestion-chip" data-msg="Compare salary ranges for software engineer vs data scientist">💲 Salary compare</span>
+      </div>
+
+      <!-- Input bar -->
+      <div id="chat-input-bar">
+        <textarea
+          id="chat-input"
+          rows="1"
+          placeholder="Describe your background and ask anything about your career…"
+        ></textarea>
+        <button class="btn-send" id="send-btn" onclick="sendMessage()" title="Send (Enter)">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+    </div><!-- /chat-view -->
+
+    <!-- ═══════════════ DASHBOARD VIEW ════════════════════════════════════ -->
+    <div class="view" id="dashboard-view">
+
+      <div style="padding:20px 24px 0;">
+        <h4 style="font-weight:800;margin:0 0 4px;">Labor Market Intelligence</h4>
+        <p style="color:var(--pf-muted);font-size:13px;margin:0 0 16px;">
+          Live data from PathFinder's 2025-Q1 labor market corpus · Click any role card to run a skill-gap analysis
+        </p>
+      </div>
+
+      <!-- Stat cards -->
+      <div style="padding:0 24px;">
+        <div class="dashboard-grid" id="stat-cards">
+          <div class="stat-card"><div class="stat-label">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- Skill Gap Analyser -->
+      <div style="padding:0 24px;">
+        <div id="skill-gap-panel">
+          <div class="section-title">🔍 Skill Gap Analyser</div>
+          <div class="sg-controls">
+            <input id="sg-skills" type="text" placeholder="Your skills (comma-separated): Python, SQL, Machine Learning…">
+            <select id="role-select"><option value="">— Select target role —</option></select>
+            <button class="btn-primary" id="analyze-btn">Analyse Gap</button>
+          </div>
+          <div id="skill-gap-result" style="margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Trending Skills Chart -->
+      <div style="padding:0 24px;">
+        <div id="trending-chart-area">
+          <div class="section-title">🔥 Trending Skills 2025</div>
+          <div id="trending-bars">
+            <div style="color:var(--pf-muted);font-size:13px;">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industry Outlook -->
+      <div style="padding:0 24px;">
+        <div class="trending-chart-area" style="background:var(--pf-surface);border:1px solid var(--pf-border);border-radius:var(--pf-radius);padding:18px;margin-bottom:24px;">
+          <div class="section-title">🏢 Industry Hiring Outlook 2025</div>
+          <div id="outlook-bars">
+            <div style="color:var(--pf-muted);font-size:13px;">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role cards -->
+      <div style="padding:0 24px 24px;">
+        <div class="section-title">💼 Career Roles Library</div>
+        <div class="dashboard-grid" id="role-cards-grid">
+          <div class="stat-card"><div class="stat-label">Loading roles…</div></div>
+        </div>
+      </div>
+
+    </div><!-- /dashboard-view -->
+
+    <!-- ═══════════════ ROADMAP VIEW ══════════════════════════════════════ -->
+    <div class="view" id="roadmap-view">
+
+      <div style="flex:1;overflow-y:auto;padding:24px;">
+        <h4 style="font-weight:800;margin:0 0 4px;">🗺️ Personalised Roadmap Planner</h4>
+        <p style="color:var(--pf-muted);font-size:13px;margin:0 0 20px;">
+          Enter your profile below and PathFinder will generate a grounded 6-month career roadmap
+          powered by IBM Granite and real labor market data.
+        </p>
+
+        <div id="roadmap-panel">
+          <div class="section-title">Your Profile</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div class="profile-field">
+              <label>Name</label>
+              <input id="rm-name" type="text" placeholder="Your name">
+            </div>
+            <div class="profile-field">
+              <label>Education / Degree Field</label>
+              <input id="rm-edu" type="text" placeholder="e.g. Computer Science">
+            </div>
+            <div class="profile-field">
+              <label>Current Skills (comma-separated)</label>
+              <input id="rm-skills" type="text" placeholder="Python, SQL, Excel…">
+            </div>
+            <div class="profile-field">
+              <label>Career Interests</label>
+              <input id="rm-interests" type="text" placeholder="AI, healthcare, sustainability…">
+            </div>
+          </div>
+          <button class="btn-primary" id="gen-roadmap-btn">🗺️ Generate Roadmap</button>
+        </div>
+
+        <div id="roadmap-panel" style="margin-top:0;">
+          <div class="section-title">Your 6-Month Roadmap</div>
+          <div id="roadmap-output" style="color:var(--pf-muted);font-size:13px;">
+            Fill in your profile above and click <strong>Generate Roadmap</strong> to get started.
+          </div>
+        </div>
+      </div>
+    </div><!-- /roadmap-view -->
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Toast area -->
+<div id="toast-area"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  crossorigin="anonymous"></script>
+
+<!-- PathFinder app JS -->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
